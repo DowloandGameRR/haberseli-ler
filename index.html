@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="tr" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haber Tr - Son Dakika Haberleri ve Güncel Gelişmeler</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        haberred: {
+                            600: '#e11d48',
+                            700: '#be123c',
+                            800: '#9f1239'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .scrollbar-thin::-webkit-scrollbar { width: 6px; height: 6px; }
+        .scrollbar-thin::-webkit-scrollbar-thumb { background-color: rgba(156, 163, 175, 0.5); border-radius: 3px; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-gray-100 min-h-screen flex flex-col justify-between transition-colors duration-200">
+
+    <!-- Üst Header Bar -->
+    <header class="sticky top-0 z-50 shadow-md">
+        <div class="bg-red-600 text-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center space-x-3 cursor-pointer" onclick="changeHeadline(1)">
+                        <div class="w-10 h-10 bg-white text-red-600 font-black text-2xl flex items-center justify-center rounded shadow-inner uppercase tracking-tighter">
+                            H
+                        </div>
+                        <div>
+                            <span class="text-2xl font-black tracking-wider uppercase text-white">HABER TR</span>
+                            <span class="block text-[9px] uppercase tracking-widest text-red-200 font-semibold">Türkiye'nin Haber Kapısı</span>
+                        </div>
+                    </div>
+
+                    <div class="hidden lg:flex items-center space-x-6 text-xs font-bold uppercase tracking-wide">
+                        <a href="#" onclick="changeHeadline(1); return false;" class="hover:text-red-200 transition-colors">EKONOMİ</a>
+                        <a href="#" onclick="changeHeadline(2); return false;" class="hover:text-red-200 transition-colors">MAGAZİN</a>
+                        <a href="#" onclick="changeHeadline(5); return false;" class="hover:text-red-200 transition-colors">SPOR</a>
+                        <a href="#" onclick="showToast('Kripto paneli açılıyor...'); return false;" class="hover:text-red-200 transition-colors">KRİPTO PARA</a>
+                        <a href="#" onclick="changeHeadline(1); return false;" class="hover:text-red-200 transition-colors text-white underline">HABER</a>
+                    </div>
+
+                    <div class="flex items-center space-x-4">
+                        <div class="relative hidden sm:block">
+                            <input type="text" id="topSearchInput" placeholder="Haber ara..." 
+                                class="bg-red-700 text-white placeholder-red-200 text-xs rounded-full px-4 py-1.5 focus:outline-none focus:ring-2 focus:ring-white/50 w-36 lg:w-48 transition-all"
+                                onkeypress="if(event.key === 'Enter') showToast('Arama yapıldı: ' + this.value)">
+                        </div>
+                        <button onclick="showToast('Üye girişi paneli açılıyor...')" class="bg-white/10 hover:bg-white/20 text-white text-xs font-bold px-3 py-1.5 rounded-md flex items-center space-x-1.5 border border-white/20 transition-all">
+                            <i class="fa-regular fa-user"></i>
+                            <span class="hidden sm:inline">ÜYE GİRİŞİ</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center space-x-6 overflow-x-auto py-2.5 text-xs font-semibold text-gray-700 dark:text-gray-200 scrollbar-thin whitespace-nowrap">
+                    <button onclick="changeHeadline(1)" class="text-red-600 font-bold flex items-center space-x-1">
+                        <i class="fa-solid fa-house"></i>
+                        <span>SON DAKİKA</span>
+                    </button>
+                    <a href="#" onclick="showToast('Kategoriye gidiliyor...'); return false;" class="hover:text-red-600 transition-colors">KADIN</a>
+                    <a href="#" onclick="showToast('Kategoriye gidiliyor...'); return false;" class="hover:text-red-600 transition-colors">FİNANS</a>
+                    <a href="#" onclick="showToast('Kategoriye gidiliyor...'); return false;" class="hover:text-red-600 transition-colors">3. SAYFA</a>
+                    <a href="#" onclick="showToast('Kategoriye gidiliyor...'); return false;" class="hover:text-red-600 transition-colors">TEKNOLOJİ</a>
+                    <a href="#" onclick="showToast('Kategoriye gidiliyor...'); return false;" class="hover:text-red-600 transition-colors">DÜNYA</a>
+                    <a href="#" onclick="showToast('Kategoriye gidiliyor...'); return false;" class="hover:text-red-600 transition-colors">RESMİ İLANLAR</a>
+                    <a href="#" onclick="showToast('Kategoriye gidiliyor...'); return false;" class="hover:text-red-600 transition-colors">GASTRONOMİ</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 text-[11px] py-1.5 font-medium">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between overflow-x-auto space-x-6 scrollbar-thin">
+                <div class="flex items-center space-x-4 shrink-0">
+                    <span class="text-gray-500">Dolar <strong class="text-gray-800 dark:text-gray-200">34.20</strong> <span class="text-emerald-600 font-bold">% 0.03</span></span>
+                    <span class="text-gray-500">Euro <strong class="text-gray-800 dark:text-gray-200">37.15</strong> <span class="text-red-600 font-bold">% 0.18</span></span>
+                    <span class="text-gray-500">Altın <strong class="text-gray-800 dark:text-gray-200">2,980</strong> <span class="text-emerald-600 font-bold">% 1.51</span></span>
+                    <span class="text-gray-500">Bitcoin <strong class="text-gray-800 dark:text-gray-200">62,400</strong> <span class="text-emerald-600 font-bold">% 0.29</span></span>
+                </div>
+                <div class="hidden md:flex items-center space-x-2 text-gray-400">
+                    <i class="fa-regular fa-clock"></i>
+                    <span id="liveClock"></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Ana İçerik Konteyneri -->
+    <div id="appContainer" class="flex-grow"></div>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-16 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500 dark:text-gray-400">
+            <div class="flex items-center space-x-3">
+                <div class="w-6 h-6 bg-red-600 text-white font-bold text-xs flex items-center justify-center rounded">H</div>
+                <span class="font-bold text-gray-900 dark:text-white">HABER TR</span>
+                <span>&copy; Tüm Hakları Saklıdır. Sahte Haber Portal Simülasyonudur.</span>
+            </div>
+            <div class="flex space-x-6">
+                <a href="#" onclick="showToast('Künye açılıyor...'); return false;" class="hover:text-red-600 transition-colors">Künye</a>
+                <a href="#" onclick="showToast('Gizlilik ilkeleri açılıyor...'); return false;" class="hover:text-red-600 transition-colors">Gizlilik İlkeleri</a>
+                <a href="#" onclick="showToast('İletişim paneli açılıyor...'); return false;" class="hover:text-red-600 transition-colors">İletişim</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Bildirim -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-gray-900 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center space-x-3 border border-gray-700">
+        <i class="fa-solid fa-circle-check text-emerald-400"></i>
+        <span id="toast-message" class="text-xs font-medium">İşlem gerçekleştirildi.</span>
+    </div>
+
+    <script>
+        // Saat Güncelleme
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('liveClock').innerText = now.toLocaleDateString('tr-TR') + ' ' + now.toLocaleTimeString('tr-TR', {hour: '2-digit', minute:'2-digit'});
+        }, 1000);
+
+        let currentHeadlineId = 1;
+
+        // Manşet Haber Bilgileri
+        const headlines = {
+            1: {
+                badge: "SİBER SIZINTI ŞOKU",
+                title: "Siber Ortamdan İsimler Sızdırıldı: Binlerce Kişinin Bilgileri Açığa Çıktı!",
+                summary: "Dark web platformlarında paylaşılan devasa sızıntı veri tabanında yüzlerce sahte ve gerçek isim yer alıyor. Ortaya saçılan listeler sosyal medyada büyük tepki toplarken yetkililer inceleme başlattı.",
+                img: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80",
+                views: "342,100",
+                commentsCount: 356
+            },
+            2: {
+                badge: "EKONOMİ",
+                title: "Merkez Bankası Faiz Kararını Açıkladı: Piyasalar Hareketlendi",
+                summary: "Ekonomi yönetiminin aldığı yeni kararlar sonrası döviz ve altın kurlarında hızlı değişimler gözleniyor. Uzmanlar önümüzdeki dönemi değerlendirdi.",
+                img: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=80",
+                views: "112,040",
+                commentsCount: 42
+            },
+            3: {
+                badge: "TEKNOLOJİ",
+                title: "Küresel İnternet Altyapısında Çöküş: Birçok Servise Erişim Sağlanamıyor",
+                summary: "Okyanus ötesi ana fiber kablolarda yaşanan teknik aksaklık nedeniyle dünya genelinde birçok popüler sosyal medya uygulaması durma noktasına geldi.",
+                img: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
+                views: "98,300",
+                commentsCount: 18
+            },
+            4: {
+                badge: "GÜNDEM",
+                title: "Meteoroloji'den 18 İl İçin Sarı Kodlu Uyarı: Yağışlar Şiddetleniyor",
+                summary: "Hafta sonu boyunca etkisini artırması beklenen olumsuz hava koşullarına karşı vatandaşların tedbirli olması istendi.",
+                img: "https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&w=1200&q=80",
+                views: "74,150",
+                commentsCount: 25
+            },
+            5: {
+                badge: "SPOR",
+                title: "Dev Derbi Öncesi Sürpriz Kadro Kararı: İki Yıldız Liste Dışı",
+                summary: "Hafta sonu oynanacak kritik karşılaşma öncesinde teknik direktörün yaptığı son taktik antrenmanda radikal değişiklikler yaşandı.",
+                img: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80",
+                views: "155,200",
+                commentsCount: 89
+            }
+        };
+
+        // Yorum İsimleri ve Sövme/Eleştiri Odaklı Metinler (İmlâ hatalı ve genel tepki içeren)
+        const namesPool = [
+            "Mehmet Demir", "Ahmet Yılmaz", "Caner Kaya", "Burak Şahin", "Kaan Çelik", 
+            "Mert Arslan", "Deniz Kara", "Gökhan Yıldız", "Tugay Aydın", "Serkan Koç",
+            "Fatih Polat", "Oğuzhan Kurt", "Büşra Demir", "Efe Aksoy", "Volkan Korkmaz",
+            "Selim Öztürk", "Hakan Şen", "Zafer Güler", "Emre Can", "Onur Demirci"
+        ];
+
+        const commentsData = [
+            "ya amk bu ne bicim ulke oldu her gun bı sızıntı cıkıyo kımse guvenlıkten anlamıyo aq",
+            "sikeyim bole işi de haberi de herkesın bılgısı ortalıkta dolanıyo rezalet amk",
+            "anasını sikmişler ortalığın kafayı yıcem valla kımse bişe yapmıyo la",
+            "yeter la mdemiz bulandı artık her yerde aynı boktan haberler amk",
+            "orospu cocukları bi guvenligi saglayamadılar yazıklar olsun valla",
+            "bune amk resmen herkesin bılgısı satılıyo siktirin gidin işinize bakın",
+            "amk mal dolu ulke bi veri koruyamadılar cidden kafayı yersin ya",
+            "bu haberi yazanın da bunu okuyanın da aq siktir git ya",
+            "lan amk siber guvenligi dedikleri sey bu mu adamlar dalga geciyo resmen",
+            "ortalık piç dolu amk kımse guvende degıl toplanmıslar buraya bos yapıolar",
+            "aq cocukları yine milleti kandırıolar siktirin gidin işinize",
+            "bune bicim lise la hıc bısey anlmadıım ama herkes birbirine sovuor kdkd",
+            "allah belanızı versin emi ne bicim iş bu milletin verileri havada ucuyo",
+            "amk hırsızları sizi kım cıkardı yine ortaya siktirin gidin ya",
+            "ulan ne bos yapmıssınız aq gidin isinize gucunuze bakın lan"
+        ];
+
+        const replyNames = ["Cemil_34", "Kadir_reis", "Tuna_K", "Murat_O7", "Baris_Can"];
+        const replyTexts = [
+            "haklılık payı var valla ne denir ki başka aq",
+            "aynen kanka katılıyorum bu gidişle sonumuz hayır değil",
+            "boş yapma abicim işine bak sen de",
+            "kes la amk piçi seni",
+            "adamlar haklı valla neyi savunuyonuz anlamıyom ki"
+        ];
+
+        // 356 Yorum Üretici (Bazılarına otomatik alt yanıtlar ekleniyor)
+        const generatedComments = [];
+        for (let i = 1; i <= 356; i++) {
+            const randomName = namesPool[Math.floor(Math.random() * namesPool.length)] + "_" + (Math.floor(Math.random() * 89) + 10);
+            const randomText = commentsData[Math.floor(Math.random() * commentsData.length)];
+            const timeAgo = (Math.floor(Math.random() * 110) + 2) + " dakika önce";
+            const likesCount = Math.floor(Math.random() * 45);
+
+            let hasReply = (i % 4 === 0);
+            let replyData = null;
+            if (hasReply) {
+                replyData = {
+                    author: replyNames[Math.floor(Math.random() * replyNames.length)],
+                    text: replyTexts[Math.floor(Math.random() * replyTexts.length)],
+                    time: "10 dakika önce"
+                };
+            }
+
+            generatedComments.push({
+                id: i,
+                author: randomName,
+                text: randomText,
+                time: timeAgo,
+                likes: likesCount,
+                hasLiked: false,
+                reply: replyData
+            });
+        }
+
+        // Router
+        function changeHeadline(id) {
+            currentHeadlineId = id;
+            window.scrollTo({top: 0, behavior: 'smooth'});
+            document.getElementById('appContainer').innerHTML = renderHomePage();
+        }
+
+        function goToDetail() {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+            document.getElementById('appContainer').innerHTML = renderDetailPage();
+        }
+
+        // Ana Sayfa HTML
+        function renderHomePage() {
+            const h = headlines[currentHeadlineId];
+
+            let navButtons = '';
+            for(let i=1; i<=5; i++) {
+                const activeClass = (i === currentHeadlineId) 
+                    ? 'bg-red-600 text-white font-black scale-105 shadow-md' 
+                    : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-red-500 hover:text-white';
+                navButtons += `<button onclick="changeHeadline(${i})" class="w-8 h-8 rounded text-xs font-bold transition-all ${activeClass}">${i}</button>`;
+            }
+
+            return `
+                <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full">
+                    
+                    <!-- Sayfalanabilir Manşet Numaraları (1 2 3 4 5) -->
+                    <div class="flex items-center space-x-2 overflow-x-auto pb-3 mb-6 scrollbar-thin">
+                        <span class="text-xs font-bold text-gray-500 uppercase tracking-wider mr-2">MANŞETLER:</span>
+                        ${navButtons}
+                    </div>
+
+                    <!-- Aktif Manşet Kartı -->
+                    <section class="mb-10 cursor-pointer group" onclick="goToDetail()">
+                        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden grid grid-cols-1 lg:grid-cols-12 gap-0 transition-transform duration-300 hover:scale-[1.005]">
+                            
+                            <div class="lg:col-span-7 relative min-h-[360px] bg-gray-900 overflow-hidden">
+                                <img src="${h.img}" alt="${h.title}" class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+                                <div class="absolute top-4 left-4">
+                                    <span class="bg-red-600 text-white text-xs font-black px-3 py-1 rounded shadow uppercase">${h.badge}</span>
+                                </div>
+                                <div class="absolute bottom-6 left-6 right-6 text-white">
+                                    <h1 class="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight leading-tight group-hover:text-red-400 transition-colors">
+                                        ${h.title}
+                                    </h1>
+                                </div>
+                            </div>
+
+                            <div class="lg:col-span-5 p-6 sm:p-8 flex flex-col justify-between">
+                                <div>
+                                    <div class="flex items-center space-x-3 text-xs text-gray-500 dark:text-gray-400 mb-3">
+                                        <span><i class="fa-solid fa-shield-halved text-red-600 mr-1"></i> Haber Tr Özel</span>
+                                        <span><i class="fa-regular fa-eye mr-1"></i> ${h.views} Okunma</span>
+                                    </div>
+                                    <p class="text-gray-700 dark:text-gray-300 text-sm sm:text-base leading-relaxed mb-6">
+                                        ${h.summary}
+                                    </p>
+                                </div>
+                                <div class="pt-6 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between">
+                                    <span class="text-xs text-red-600 font-bold flex items-center group-hover:underline">
+                                        Habere Git ve Yorumları Oku <i class="fa-solid fa-arrow-right ml-1"></i>
+                                    </span>
+                                    <div class="flex items-center space-x-2 text-xs font-bold text-gray-500">
+                                        <span><i class="fa-regular fa-comment text-red-600 mr-1"></i> ${h.commentsCount} Yorum</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Alt Grid Haberler -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <article class="bg-white dark:bg-gray-800 rounded-xl shadow border border-gray-200 dark:border-gray-700 overflow-hidden cursor-pointer hover:shadow-lg transition-shadow" onclick="changeHeadline(2)">
+                            <img src="${headlines[2].img}" class="h-40 w-full object-cover">
+                            <div class="p-4">
+                                <span class="text-[10px] font-bold text-red-600 uppercase">Ekonomi</span>
+                                <h3 class="font-bold text-sm text-gray-900 dark:text-white mt-1">${headlines[2].title}</h3>
+                            </div>
+                        </article>
+                        <article class="bg-white dark:bg-gray-800 rounded-xl shadow border border-gray-200 dark:border-gray-700 overflow-hidden cursor-pointer hover:shadow-lg transition-shadow" onclick="changeHeadline(3)">
+                            <img src="${headlines[3].img}" class="h-40 w-full object-cover">
+                            <div class="p-4">
+                                <span class="text-[10px] font-bold text-blue-600 uppercase">Teknoloji</span>
+                                <h3 class="font-bold text-sm text-gray-900 dark:text-white mt-1">${headlines[3].title}</h3>
+                            </div>
+                        </article>
+                        <article class="bg-white dark:bg-gray-800 rounded-xl shadow border border-gray-200 dark:border-gray-700 overflow-hidden cursor-pointer hover:shadow-lg transition-shadow" onclick="changeHeadline(5)">
+                            <img src="${headlines[5].img}" class="h-40 w-full object-cover">
+                            <div class="p-4">
+                                <span class="text-[10px] font-bold text-emerald-600 uppercase">Spor</span>
+                                <h3 class="font-bold text-sm text-gray-900 dark:text-white mt-1">${headlines[5].title}</h3>
+                            </div>
+                        </article>
+                    </div>
+                </main>
+            `;
+        }
+
+        // Detay Sayfası HTML (Soyadı Güngör)
+        function renderDetailPage() {
+            const h = headlines[currentHeadlineId];
+
+            let commentsHtml = '';
+            generatedComments.forEach(c => {
+                let replyHtml = '';
+                if (c.reply) {
+                    replyHtml = `
+                        <div class="ml-10 mt-3 pl-3 border-l-2 border-red-500/40 bg-gray-50 dark:bg-gray-900/40 p-3 rounded-r-xl space-y-1">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-6 h-6 rounded-full bg-gray-600 text-white font-bold text-[10px] flex items-center justify-center uppercase">
+                                    ${c.reply.author.charAt(0)}
+                                </div>
+                                <div>
+                                    <span class="font-bold text-xs text-gray-800 dark:text-gray-200">${c.reply.author}</span>
+                                    <span class="text-[9px] text-gray-400 ml-1">${c.reply.time}</span>
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-600 dark:text-gray-300 pl-8">
+                                ${c.reply.text}
+                            </p>
+                        </div>
+                    `;
+                }
+
+                commentsHtml += `
+                    <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 shadow-sm flex flex-col justify-between space-y-2" id="comment-card-${c.id}">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-8 h-8 rounded-full bg-red-600 text-white font-bold text-xs flex items-center justify-center uppercase">
+                                    ${c.author.charAt(0)}
+                                </div>
+                                <div>
+                                    <span class="font-bold text-xs sm:text-sm text-gray-900 dark:text-white">${c.author}</span>
+                                    <span class="block text-[10px] text-gray-400">${c.time}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-300 pl-10">
+                            ${c.text}
+                        </p>
+                        <div class="flex items-center justify-end space-x-4 pt-1 text-xs text-gray-500 pl-10">
+                            <button onclick="toggleCommentLike(${c.id})" class="hover:text-red-600 flex items-center space-x-1 transition-colors">
+                                <i id="cicon-${c.id}" class="${c.hasLiked ? 'fa-solid text-red-600' : 'fa-regular'} fa-heart"></i> 
+                                <span id="ccount-${c.id}">${c.likes}</span>
+                            </button>
+                            <button onclick="showToast('Yanıt yazma paneli açıldı')" class="hover:text-blue-600">Yanıtla</button>
+                        </div>
+                        ${replyHtml}
+                    </div>
+                `;
+            });
+
+            return `
+                <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+                    <div class="flex items-center justify-between mb-6">
+                        <button onclick="changeHeadline(${currentHeadlineId})" class="bg-gray-200 dark:bg-gray-800 hover:bg-red-600 hover:text-white text-gray-800 dark:text-gray-200 px-4 py-2 rounded-lg text-xs font-bold transition-colors flex items-center space-x-2">
+                            <i class="fa-solid fa-arrow-left"></i>
+                            <span>Ana Sayfaya Dön</span>
+                        </button>
+                        <div class="flex items-center space-x-3 text-xs text-gray-500 dark:text-gray-400">
+                            <span><i class="fa-regular fa-clock"></i> Tahmini Okuma: 3 dk</span>
+                            <div class="flex items-center space-x-1 bg-gray-200 dark:bg-gray-800 px-2 py-1 rounded">
+                                <button onclick="adjustFontSize(-1)" class="px-1.5 font-bold hover:text-red-600" title="Küçült">A-</button>
+                                <button onclick="adjustFontSize(1)" class="px-1.5 font-bold hover:text-red-600" title="Büyüt">A+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <article class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden p-6 sm:p-10 mb-8">
+                        <div class="flex items-center space-x-3 mb-4">
+                            <span class="bg-red-600 text-white text-xs font-black px-3 py-1 rounded uppercase">${h.badge}</span>
+                            <span class="text-xs text-gray-500 dark:text-gray-400"><i class="fa-regular fa-clock mr-1"></i> Güncelleme: 5 dakika önce</span>
+                        </div>
+
+                        <h1 class="text-2xl sm:text-4xl font-black text-gray-900 dark:text-white leading-tight mb-6">
+                            ${h.title}
+                        </h1>
+
+                        <div class="relative h-72 sm:h-96 rounded-xl overflow-hidden mb-8 shadow-inner bg-gray-900">
+                            <img src="${h.img}" alt="${h.title}" class="w-full h-full object-cover">
+                        </div>
+
+                        <div id="articleContent" class="prose dark:prose-invert max-w-none text-sm sm:text-base text-gray-700 dark:text-gray-300 space-y-6 leading-relaxed transition-all">
+                            <p>
+                                İnternet dünyasında eşine az rastlanır türden devasa bir sızıntı dalgası yaşanıyor. Yeraltı siber forumlarında ve çeşitli mesajlaşma ağlarında paylaşılan ham veri tabanları, Türkiye genelinde on binlerce bireysel kullanıcının hassas bilgilerinin açıkta kaldığını gözler önüne serdi. Uzmanlar sızıntının derinliğini araştırırken, kamuoyunda endişe ve merak üst seviyeye ulaştı.
+                            </p>
+                            <p>
+                                Güvenlik analistlerinin ilk incelemelerine göre, sızdırılan dosyalarda kişilerin açık kimlik bilgileri, ikametgâh illeri ve sistem kayıt logları yer alıyor. Liste, sosyal medyanın en çok konuştuğu konu haline gelirken veri tabanından sızdırılan kişilerin tam listesinden bir kesit kamuoyuyla paylaşıldı.
+                            </p>
+
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mt-6 mb-3">Sızdırılan Veri Tabanından Örnek Liste Kesiti:</h3>
+                            <ul class="list-disc pl-5 space-y-1.5 text-xs sm:text-sm font-mono bg-gray-50 dark:bg-gray-900/50 p-4 rounded-xl border border-gray-200 dark:border-gray-700">
+                                <li>1. Ahmet Yılmaz - İstanbul (Kritik Veri Seti)</li>
+                                <li>2. Mehmet Demir - Ankara (Kritik Veri Seti)</li>
+                                <li>3. Caner Kaya - İzmir (Kritik Veri Seti)</li>
+                                <li>4. Burak Şahin - Bursa (Kritik Veri Seti)</li>
+                                <li>5. Kaan Çelik - Antalya (Kritik Veri Seti)</li>
+                                <li>6. Mert Arslan - Adana (Kritik Veri Seti)</li>
+                                <li>7. Deniz Kara - Konya (Kritik Veri Seti)</li>
+                                <li>8. Gökhan Yıldız - Kayseri (Kritik Veri Seti)</li>
+                                <li>9. Tugay Aydın - Eskişehir (Kritik Veri Seti)</li>
+                                <li>10. Serkan Koç - Trabzon (Kritik Veri Seti)</li>
+                                <li>11. Fatih Polat - Gaziantep (Kritik Veri Seti)</li>
+                                <li>12. Oğuzhan Kurt - Samsun (Kritik Veri Seti)</li>
+                                <li>13. Büşra Demir - Mersin (Kritik Veri Seti)</li>
+                                <li>14. Efe Aksoy - Denizli (Kritik Veri Seti)</li>
+                                <li>15. Volkan Korkmaz - Diyarbakır (Kritik Veri Seti)</li>
+                                <li>16. Selim Öztürk - Sakarya (Kritik Veri Seti)</li>
+                                <li>17. Rüzgar Seyit Güngör - Ankara (Kritik Veri Seti)</li>
+                                <li>18. Hakan Şen - Aydın (Kritik Veri Seti)</li>
+                                <li>19. Zafer Güler - Balıkesir (Kritik Veri Seti)</li>
+                                <li>20. Emre Can - Tekirdağ (Kritik Veri Seti)</li>
+                            </ul>
+
+                            <p>
+                                Konuyla ilgili resmi makamlardan henüz kapsamlı bir açıklama yapılmazken, siber güvenlik kurulları vatandaşları şüpheli aramalar, oltalama (phishing) mailleri ve sahte web sitelerine karşı dikkatli olmaları yönünde acilen uyarmaktadır.
+                            </p>
+                        </div>
+
+                        <div class="mt-10 pt-6 border-t border-gray-200 dark:border-gray-700 flex flex-wrap items-center justify-between gap-4">
+                            <div class="flex items-center space-x-3">
+                                <button onclick="handleDetailLike()" id="detailLikeBtn" class="bg-gray-100 dark:bg-gray-700 hover:bg-red-50 text-gray-700 dark:text-gray-200 px-4 py-2 rounded-lg text-xs font-bold flex items-center space-x-2 transition-all">
+                                    <i class="fa-regular fa-heart text-base"></i>
+                                    <span id="detailLikeCount">12,480 Beğeni</span>
+                                </button>
+                                <button onclick="showToast('Bağlantı panoya kopyalandı!')" class="bg-gray-100 dark:bg-gray-700 hover:bg-blue-50 text-gray-700 dark:text-gray-200 px-4 py-2 rounded-lg text-xs font-bold flex items-center space-x-2 transition-all">
+                                    <i class="fa-solid fa-share-nodes"></i>
+                                    <span>Paylaş</span>
+                                </button>
+                            </div>
+                            <span class="text-xs font-bold text-gray-500">Toplam 356 Yorum Listeleniyor</span>
+                        </div>
+                    </article>
+
+                    <!-- Yorum Ekleme -->
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 mb-8">
+                        <h3 class="text-base font-bold text-gray-900 dark:text-white mb-4 flex items-center">
+                            <i class="fa-regular fa-comment text-red-600 mr-2"></i> Yorum Gönder
+                        </h3>
+                        <div class="space-y-3">
+                            <input type="text" id="newCommentAuthor" placeholder="Adınız / Rumuzunuz" class="w-full bg-gray-100 dark:bg-gray-700 border border-transparent rounded-lg px-4 py-2 text-xs focus:outline-none focus:border-red-600">
+                            <textarea id="newCommentText" rows="3" placeholder="Yorumunuzu girin..." class="w-full bg-gray-100 dark:bg-gray-700 border border-transparent rounded-lg px-4 py-2 text-xs focus:outline-none focus:border-red-600"></textarea>
+                            <button onclick="addNewComment()" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg text-xs font-bold transition-colors">
+                                Gönder
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 356 Yorum Listesi ve Sıralama Özelliği -->
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-black text-gray-900 dark:text-white">
+                                Tüm Yorumlar (356)
+                            </h3>
+                            <div class="flex items-center space-x-2 text-xs">
+                                <span class="text-gray-500">Sırala:</span>
+                                <button onclick="showToast('En yeniler sıralandı')" class="font-bold text-red-600 hover:underline">En Yeniler</button>
+                                <span class="text-gray-300">|</span>
+                                <button onclick="showToast('En çok beğenilenler sıralandı')" class="text-gray-600 dark:text-gray-400 hover:underline">Popüler</button>
+                            </div>
+                        </div>
+
+                        <div class="max-h-[800px] overflow-y-auto pr-2 space-y-4 scrollbar-thin" id="commentsListContainer">
+                            ${commentsHtml}
+                        </div>
+                    </div>
+                </main>
+            `;
+        }
+
+        // Yorum Beğeni Kısıtlama Mekanizması (Tek seferlik beğeni)
+        function toggleCommentLike(id) {
+            const comment = generatedComments.find(c => c.id === id);
+            if (!comment) return;
+
+            const span = document.getElementById(`ccount-${id}`);
+            const icon = document.getElementById(`cicon-${id}`);
+
+            if (!comment.hasLiked) {
+                comment.hasLiked = true;
+                comment.likes += 1;
+                span.innerText = comment.likes;
+                icon.classList.remove('fa-regular');
+                icon.classList.add('fa-solid', 'text-red-600');
+                showToast("Yorum beğenildi");
+            } else {
+                comment.hasLiked = false;
+                comment.likes -= 1;
+                span.innerText = comment.likes;
+                icon.classList.remove('fa-solid', 'text-red-600');
+                icon.classList.add('fa-regular');
+                showToast("Beğeni kaldırıldı");
+            }
+        }
+
+        // Yazı Boyutu Ayarlama
+        let currentFontSizeLevel = 0;
+        function adjustFontSize(direction) {
+            const content = document.getElementById('articleContent');
+            if(!content) return;
+            currentFontSizeLevel += direction;
+            if(currentFontSizeLevel < -1) currentFontSizeLevel = -1;
+            if(currentFontSizeLevel > 2) currentFontSizeLevel = 2;
+
+            if(currentFontSizeLevel === -1) {
+                content.style.fontSize = '0.85rem';
+                showToast("Yazı boyutu küçültüldü");
+            } else if(currentFontSizeLevel === 0) {
+                content.style.fontSize = '1rem';
+                showToast("Yazı boyutu normal");
+            } else if(currentFontSizeLevel === 1) {
+                content.style.fontSize = '1.15rem';
+                showToast("Yazı boyutu büyütüldü");
+            } else if(currentFontSizeLevel === 2) {
+                content.style.fontSize = '1.3rem';
+                showToast("Yazı boyutu maksimum");
+            }
+        }
+
+        // Yardımcı Etkileşimler
+        let isDetailLiked = false;
+        function handleDetailLike() {
+            const btn = document.getElementById('detailLikeBtn');
+            const countSpan = document.getElementById('detailLikeCount');
+            if(!isDetailLiked) {
+                isDetailLiked = true;
+                btn.classList.add('text-red-600', 'bg-red-50');
+                countSpan.innerText = "12,481 Beğeni";
+                showToast("Beğenildi");
+            } else {
+                isDetailLiked = false;
+                btn.classList.remove('text-red-600', 'bg-red-50');
+                countSpan.innerText = "12,480 Beğeni";
+            }
+        }
+
+        function addNewComment() {
+            const author = document.getElementById('newCommentAuthor').value.trim();
+            const text = document.getElementById('newCommentText').value.trim();
+            if(!author || !text) {
+                showToast("Lütfen tüm alanları doldurun.");
+                return;
+            }
+
+            const container = document.getElementById('commentsListContainer');
+            const newDiv = document.createElement('div');
+            newDiv.className = "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 shadow-sm flex flex-col justify-between space-y-2";
+            newDiv.innerHTML = `
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 rounded-full bg-red-600 text-white font-bold text-xs flex items-center justify-center uppercase">
+                            ${author.charAt(0)}
+                        </div>
+                        <div>
+                            <span class="font-bold text-xs sm:text-sm text-gray-900 dark:text-white">${escapeHtml(author)}</span>
+                            <span class="block text-[10px] text-gray-400">Az önce</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-xs sm:text-sm text-gray-700 dark:text-gray-300 pl-10">${escapeHtml(text)}</p>
+            `;
+            container.prepend(newDiv);
+            document.getElementById('newCommentAuthor').value = '';
+            document.getElementById('newCommentText').value = '';
+            showToast("Yorum yayınlandı.");
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            toastMessage.innerText = message;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 2500);
+        }
+
+        function escapeHtml(text) {
+            const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+
+        window.onload = function() {
+            changeHeadline(1);
+        };
+    </script>
+</body>
+</html>
